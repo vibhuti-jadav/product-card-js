@@ -241,8 +241,62 @@ let data =[
     }
   ]
 
-
+  let cart = JSON.parse(localStorage.getItem("cart")) || []
   let row = document.getElementById("row")
+
+  let cartBody = document.getElementById("cart-body")
+  let search = document.getElementById("search")
+ 
+ 
+  function setLocal(c){
+   localStorage.setItem("cart", JSON.stringify(c))
+   showCart()
+  }
+
+
+
+
+
+  function handleCart(id){
+    let item = data.find((el) => el.id == id )
+    cart.push(item)
+  
+    setLocal(cart)
+  
+  }
+
+
+  search.addEventListener("submit", function(e){
+  
+        e.preventDefault();
+  
+        let searchText = document.getElementById("searchText")
+  
+        console.log(searchText.value)
+  
+        let newData = data.filter((ele) => ele.title.toLocaleUpperCase().includes(searchText.value.toLocaleUpperCase()) || ele.category.toLocaleUpperCase().includes(searchText.value.toLocaleUpperCase())  )
+  
+        showrow(newData)
+  })
+  
+  let advSearch = document.getElementById("advSearch")
+  
+  advSearch.addEventListener("keyup", function(e){
+  
+  console.log(e.target.value)
+  
+  let searchText = e.target.value
+  
+  let newData = data.filter((ele) => ele.title.toLocaleUpperCase().includes(searchText.toLocaleUpperCase()) || ele.category.toLocaleUpperCase().includes(searchText.toLocaleUpperCase())  )
+  
+  showrow(newData)
+  })
+
+
+
+  
+
+
    
   function electro(){
     let newData = data.filter((ele) => ele.category == "electronics")
@@ -276,7 +330,6 @@ let data =[
   function high()
   {
     let newData = data.sort(( a , b) => b.price - a.price )
-
     showrow(newData)
   }
 
@@ -309,9 +362,8 @@ document.getElementById('allProductsButton').addEventListener('click', all);
                       <hr>
 
                       <div class="d-grid  col-9 mx-auto">
-                      <a href="#" class="btn btn-primary rounded-5">Purchase Item</a>
-                            </div>
-
+                      <a class="btn btn-primary rounded-5" onclick="handleCart(${ele.id})">Add To Cart</a>
+                      </div>
                     </div>
                   </div>
             </div>
@@ -320,3 +372,47 @@ document.getElementById('allProductsButton').addEventListener('click', all);
   }
 
   showrow(data)
+
+
+  function showCart(){
+    cartBody.innerHTML="";
+    cart.map((el)=>{
+      cartBody.innerHTML += `
+         <div class="col-12">
+                  <div class="card h-100">
+                    <div class="row">
+                      <div class="col-4">
+                         <img src=${el.image} height="100px" class="card-img-top border" alt="...">
+                      </div>
+                      <div class="col-8">
+                        <div class="card-body  p-1"> 
+                           <h6 class="card-title">${el.title}</h6> 
+                             <p class="card-text mb-2">${el.category}</p>
+                          <div class="d-flex  justify-content-between">
+                            <span class="badge text-bg-light">$ ${el.price}</span>
+                            <span class="badge text-bg-light">⭐ ${el.rating.rate}</span>
+                          </div>
+                        
+                      
+                       
+                          <a onclick="deleteCart(${el.id})" class="btn btn-danger btn-sm">🗑️</a>
+                        </div>
+                      </div>
+                    </div>
+                    </div>
+              </div>
+      `
+    })
+  }
+
+
+ showrow(data)
+ 
+ showCart()
+
+  function deleteCart(id){
+    task_arr = cart.filter((ele) => ele.id != id)
+    setLocal(task_arr)
+    location.reload()
+
+ }

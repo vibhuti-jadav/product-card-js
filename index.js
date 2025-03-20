@@ -249,7 +249,8 @@ let data =[
 
   let itembody = document.getElementById("itembody")
   let total = document.getElementById("total")
- 
+
+  let showbad=document.getElementById("badge")
 
 
   function getLocal(){
@@ -266,8 +267,6 @@ let data =[
    getLocal()
    showCart()
   }
-
-
 
 
 
@@ -309,7 +308,6 @@ let data =[
     let item = data.find((el) => el.id == id )
     item.count = 1;
     cart.push(item)
-  
     setLocal(cart)
   
   }
@@ -446,8 +444,6 @@ document.getElementById('allProductsButton').addEventListener('click', all);
  
  }
  
- 
- 
  function handleIncCount(id){
    let newCart = cart.find((ele) => ele.id == id)
    newCart.count++;
@@ -472,8 +468,10 @@ document.getElementById('allProductsButton').addEventListener('click', all);
    setLocal(cart)
  }
 
+ 
 
   function showCart(){
+
     cartBody.innerHTML="";
     cart.map((el)=>{
       cartBody.innerHTML += `
@@ -507,6 +505,10 @@ document.getElementById('allProductsButton').addEventListener('click', all);
               </div>
       `
     })
+
+    showbad.innerHTML=`
+      <span class="badge text-bg-secondary">${cart.length}</span>
+    `
 
         total.innerHTML = ""
     total.innerHTML = ` 
@@ -558,5 +560,6 @@ document.getElementById('allProductsButton').addEventListener('click', all);
     task_arr = cart.filter((ele) => ele.id != id)
     setLocal(task_arr)
 
-
+   
  }
+

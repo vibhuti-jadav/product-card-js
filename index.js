@@ -507,7 +507,7 @@ document.getElementById('allProductsButton').addEventListener('click', all);
     })
 
     showbad.innerHTML=`
-      <span class="badge text-bg-secondary">${cart.length}</span>
+      <span class="badge text-bg-warning position-absolute position-absolute top-0 start-100 translate-middle  rounded-5 ">${cart.length}</span>
     `
 
         total.innerHTML = ""
@@ -558,8 +558,6 @@ document.getElementById('allProductsButton').addEventListener('click', all);
 
   function deleteCart(id){
     task_arr = cart.filter((ele) => ele.id != id)
-    setLocal(task_arr)
-
-   
+    setLocal(task_arr)  
  }
 

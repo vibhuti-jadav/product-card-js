@@ -241,6 +241,9 @@ let data =[
     }
   ]
 
+
+  let login = JSON.parse(sessionStorage.getItem("login"))
+
   let cart = JSON.parse(localStorage.getItem("cart")) || []
   let row = document.getElementById("row")
 
@@ -305,12 +308,26 @@ let data =[
 
 
   function handleCart(id){
-    let item = data.find((el) => el.id == id )
+
+    if(login)
+    {
+       let item = data.find((el) => el.id == id )
     item.count = 1;
     cart.push(item)
-    setLocal(cart)
-  
+    setLocal(cart) 
+    }
+    else{
+       location.href="login.html"
+    }
   }
+
+  function logout(){
+    sessionStorage.removeItem("login")
+    location.href="login.html"
+  }
+
+
+
 
   function deleteCart(id){
     let newCart = cart.filter((ele) => ele.id != id)
@@ -493,7 +510,7 @@ document.getElementById('allProductsButton').addEventListener('click', all);
                             <a onclick="deleteCart(${el.id})" class="btn btn-danger btn-sm">🗑️</a>
                             <a onclick="handleItem(${el.id})" data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-warning">More</a>
 
-                                  <div class="btn-group " style="margin-left: 30px;">
+                                  <div class="btn-group " style="margin-left: 20px;">
                            <button onclick="handleDecCount(${el.id})" class="btn btn-secondary btn-sm">-</button>
                            <button class="btn btn-light btn-sm" disabled>${el.count}</button>
                            <button onclick="handleIncCount(${el.id})" class="btn btn-secondary btn-sm">+</button>
@@ -511,7 +528,7 @@ document.getElementById('allProductsButton').addEventListener('click', all);
     `
 
         total.innerHTML = ""
-    total.innerHTML = ` 
+        total.innerHTML = ` 
    
     <div class="container bg-light text-dark rounded-2">
               <div class="row g-2">
